@@ -45,10 +45,9 @@ export class AuthService {
   validateUser(email: string, password: string): Observable<User> {
     return from(
       this.userRepository.findOne(
-        { email },
         { 
-          select: ['id', 'firstName', 'lastName', 'email', 'password', 'role' ] 
-        },
+          where: { email },
+          select: ['id', 'firstName', 'lastName', 'email', 'password', 'role' ]},
       ),
     ).pipe(
       switchMap((user: User) => 
