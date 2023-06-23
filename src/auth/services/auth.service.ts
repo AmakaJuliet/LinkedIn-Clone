@@ -11,6 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
+  
   constructor(@InjectRepository(UserEntity) 
   private readonly userRepository: Repository<UserEntity>,
   private jwtService: JwtService
@@ -73,19 +74,5 @@ export class AuthService {
         }
       }),
     );
-  }
-
-  findUserById(id: number): Observable<User> {
-    return from(
-      this.userRepository.findOne(
-      {
-        where: { id },
-        relations: ['feedPosts']})
-    ).pipe(
-      map((user: User) => {
-        delete user.password;
-        return user;
-      })
-    )
   }
 }
