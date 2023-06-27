@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const fs = require('fs');
 import FileType from 'file-type';
-import fileTypeFromFile from 'file-type';
+import FromFile from 'file-type';
 import * as nodeFetch from "node-fetch"
 
 import path = require('path');
@@ -36,7 +36,7 @@ export const saveImageToStorage = {
 }
 
 export const isFileExtensionSafe = (fullFilePath: string): Observable<boolean> => {
-  return from(FileType.fileTypeFromFile(fullFilePath)).pipe(
+  return from(FileType.fromFile(fullFilePath)).pipe(
     switchMap((fileExtensionAndMimeType: { ext: validFileExtension; mime: validMimeType;}) => {
       if(!fileExtensionAndMimeType) return of(false)
     })
