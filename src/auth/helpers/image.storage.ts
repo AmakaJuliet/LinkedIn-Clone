@@ -2,9 +2,13 @@ import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 
 const fs = require('fs');
-const FileType = require('file-type');
+import FileType from 'file-type';
+import fileTypeFromFile from 'file-type';
+import * as nodeFetch from "node-fetch"
 
 import path = require('path');
+import { Observable, from, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators'
 
 type validFileExtension = 'png' | 'jpg' | 'jpeg';
 type validMimeType = 'image/png' | 'image/jpg' | 'image/jpeg';
@@ -18,15 +22,23 @@ const validMimeTypes: validMimeType[] = [
 
 export const saveImageToStorage = {
     storage: diskStorage({
-      destination: '/images',
+      destination: './images',
       filename: (req, file, cb) => {
         const fileExtension: string = path.extname(file.originalname);
         const fileName: string = uuidv4() + fileExtension; 
         cb(null, fileName)
       }
     }),
-    filter: (req, file, cb) => {
+    fileFilter: (req, file, cb) => {
       const allowedMimeTypes: validMimeType[] = validMimeTypes;
-      allowedMimeTypes.includes(file.mimeType)
+      allowedMimeTypes.includes(file.mimetype) ? cb(null, true) : cb(null, false);
     }
+}
+
+export const isFileExtensionSafe = (fullFilePath: string): Observable<boolean> => {
+  return from(FileType.fileTypeFromFile(fullFilePath)).pipe(
+    switchMap((fileExtensionAndMimeType: { ext: validFileExtension; mime: validMimeType;}) => {
+      if(!fileExtensionAndMimeType) return of(false)
+    })
+  )
 }
