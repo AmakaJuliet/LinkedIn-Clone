@@ -1,7 +1,7 @@
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 
-const fs = require('fs');
+import fs from 'fs';
 import FileType from 'file-type';
 import { fileTypeFromFile } from 'file-type';
 import * as nodeFetch from "node-fetch"
