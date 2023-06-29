@@ -1,6 +1,6 @@
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
-import { FileExtension, MimeType, fileTypeFromFile } from 'file-type';
+import FileType, { FileExtension, MimeType } from 'file-type';
 import { Observable, from, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import path from 'path';
