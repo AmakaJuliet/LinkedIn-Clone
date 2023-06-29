@@ -1,6 +1,6 @@
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
-import FileType, { FileExtension, MimeType } from 'file-type';
+import { FileExtension, MimeType, fileTypeFromFile } from 'file-type';
 import { Observable, from, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import path from 'path';
@@ -62,7 +62,7 @@ export const saveImageToStorage = {
 export const isFileExtensionSafe = (
   fullFilePath: string,
 ): Observable<boolean> => {
-  return from(FileType.fileTypeFromFile(fullFilePath)).pipe(
+  return from(fileTypeFromFile(fullFilePath)).pipe(
     switchMap((fileExtensionAndMimeType) => {
       if (!fileExtensionAndMimeType) return of(false);
 
